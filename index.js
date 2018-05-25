@@ -59,3 +59,9 @@ app.use('/api', require('./api'))
 app.listen(config.port, () => {
   console.log('ready', config.port)
 })
+
+//การเปลี่ยนเลขแบบ realtime
+// setInterval(() => {
+//   let num = ('' + Math.floor(Math.random() * 1000000)).padStart(6, '0')
+//   socket.publish('lotto', num)
+// }, 5000)

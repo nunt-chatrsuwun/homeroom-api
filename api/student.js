@@ -2,25 +2,41 @@ const express = require('express')
 const router = express.Router()
 
 module.exports = router
-//     http://localhost:7000/api/student?class=1
-router.get('/', async (req, res) => {
-  let db = req.db
-  let rows
-  if (req.query.class) {
-    rows = await db('student').where('class', '=', req.query.class).orderBy('first_name')
-  } else {
-    rows = await db('student').orderBy('first_name')
+//     http://localhost:8000/api/student?class=1
+router.get('/list', async (req, res) => {
+  try {
+    let rows = await req.db('students').select('stdcode', 'first_name', 'last_name')
+    res.send({
+      ok: true,
+      student: Object.values(rows[0]),
+    })
+  } catch (e) {
+    res.send({ ok: false, error: e.message })
   }
-  // let rows = await db('student').orderBy('fname').where(function() {
-  //   if (req.query.class) {
-  //     this.where('class', '=', req.query.class)
-  //   }
-  // })
-  res.send({
-    ok: true,
-    student: rows,
-  })
 })
+
+//     /api/student/save
+router.post('/save', async (req, res) => {
+  try {
+    //TODO: check
+
+    //INSERT
+    let id = await req.db('students').insert({
+      stdcode: req.body.stdcode || '',
+      firstName: req.body.firstName || '',
+      lastName: req.body.lastName || '',     
+      gender: req.body.gender || '',       
+      grp: req.body.grp || '', 
+    }).then(ids => ids[0])
+    res.send({
+      ok: true,
+      id,
+    })
+  } catch (e) {
+    res.send({ ok: false, error: e.message })
+  }
+})
+
 // /api/student/id/555
 router.get('/id/:id', async (req, res) => {
   let db = req.db
