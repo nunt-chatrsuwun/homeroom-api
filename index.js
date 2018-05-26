@@ -17,6 +17,8 @@ const compression = require('compression')
 app.use(compression({
   filter: (req, res) => (!req.headers['x-no-compression'] && compression.filter(req, res)) || false,
 }))
+//http://localhost:7000/sw.js
+app.use(express.static('public')) 
 
 app.use((req, res, next) => {
   var header = { 'Access-Control-Allow-Origin': '*' }
