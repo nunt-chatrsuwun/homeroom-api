@@ -4,7 +4,7 @@ module.exports = {
   db: {
     host : 'localhost',
     user : 'root',
-    password : '',
+    password : 'root',
     database : 'homeroom'
   },
   socket: {
