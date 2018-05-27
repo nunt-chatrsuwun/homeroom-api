@@ -21,12 +21,13 @@ router.post('/save', async (req, res) => {
     //TODO: check
 
     //INSERT
-    let id = await req.db('students').insert({
-      stdcode: req.body.stdcode || '',
-      firstName: req.body.firstName || '',
-      lastName: req.body.lastName || '',     
-      gender: req.body.gender || '',       
-      grp: req.body.grp || '', 
+    let id = await req.db('hrsave').insert({
+      id: req.body.id || '',
+      date: req.body.date || '',
+      time: req.body.time || '',     
+      grp: req.body.grp || '',
+      hrdetail: req.body.hrdetail || '',
+      img: req.body.img || '', 
     }).then(ids => ids[0])
     res.send({
       ok: true,
@@ -40,20 +41,23 @@ router.post('/save', async (req, res) => {
 // /api/student/id/555
 router.get('/id/:id', async (req, res) => {
   let db = req.db
-  let rows = await db('student')
+  let rows = await db('hrsave')
     .where('id', '=', req.params.id)
   res.send({
     ok: true,
-    student: rows[0] || {},
+    hrsave: rows[0] || {},
   })
 })
 //   /api/student/save
 router.post('/save', async (req, res) => {
   let db = req.db
   // UPDATE student SET first_name=?, last_name=? WHERE id=7
-  await db('student').where({id: req.body.id}).update({
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
+  await db('hrsave').where({id: req.body.id}).update({
+    date: req.body.date,
+    time: req.body.time,
+    grp: req.body.grp,
+    hrdetail: req.body.hrdetail,
+    img: req.body.img,
   })
   // let ids = await db('student').insert({
   //   code: '',
